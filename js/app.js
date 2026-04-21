@@ -40,6 +40,7 @@ button2.addEventListener('click', () => {
 input1.style.display = 'none';
 label1.style.display = 'none';
 button2.style.display = 'none';
+scoreboard.style.display = 'none';
 
 // Functions
 // Här ökas poängen för varje klick.
@@ -79,7 +80,6 @@ function endGame() {
   input1.style.display = 'block'; // Här blir namnfältet synligt.
   label1.style.display = 'block'; // Här visas texten "Name (3 to 16 characters):"
   button2.style.display = 'block'; // Här visas submit-knappen.
-  getScoreBoardData(); // // Här hämtas den aktuella scoreboarden när spelet är slut.
   // TODO: Addera spärr på input.
 
 }
@@ -105,11 +105,13 @@ async function submitHighScore() {
     } else { // ... eller inte (requesten har gått fram men servern svarar med ett fel).
       message.innerText = "Något gick tyvärr fel, dina poäng kan inte visas.";
     }
-    getScoreBoardData(); // Här hämtas scoreboarden först efter att min data skickats/Post requesten är klar.
+    getScoreBoardData(); // Här hämtas den aktuella scoreboarden när spelet är slut, efter att min data skickats/Post
+    // requesten är klar.
+    scoreboard.style.display = 'block';
   } catch (error) { // Här säger jag att om requesten kraschar/något går fel ska det fångas i catch och ge ett felmeddelande.
   console.error(error);
-  message.innerText = "Något gick tyvärr fel, dina poäng kunde inte registreras."; // Här visas ett meddelande om något gick fel med tex
-    // nätverket och requesten inte går igenom.
+  message.innerText = "Något gick tyvärr fel, dina poäng kunde inte registreras."; // Här visas ett meddelande om något
+    // gick fel med tex nätverket och requesten inte går igenom.
   }
 }
 

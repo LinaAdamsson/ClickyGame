@@ -10,6 +10,10 @@
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
+@font-face {
+  font-family: 'Starshines';
+  src: url('../fonts/Starshines.otf') format('opentype');
+}
 
 html {
   color: #222;
@@ -245,3 +249,60 @@ textarea {
   }
 }
 
+body {
+  background-image: url('../img/ezio-auditore-_9ML_4yrPEY-unsplash.jpg');
+  background-repeat: repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-family: 'Starshines', sans-serif;
+  text-align: center;
+  font-size: 5em;
+  color: gold;
+}
+
+p {
+  color: #fff;
+}
+
+#scoreDisplay {
+  font-family: 'Starshines', sans-serif;
+  font-size: 40px;
+  color: white;
+}
+
+#timerDisplay {
+  font-family: 'Starshines';
+  font-size: 24px;
+  color: white;
+}
+
+#button1 {
+  width: 80px;
+  height: 80px;
+  padding: 10px 20px;
+  font-family: 'Starshines';
+  font-size: 40px;
+  border-radius: 50%;
+  background-color: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#button1:hover {
+  background-color: white;
+  color: black;
+}
+
+#label1 {
+  color: #fff;
+}
