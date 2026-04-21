@@ -84,16 +84,16 @@ function endGame() {
 
 }
 
-// Här skapar jag en asynkron funktion som gör en POST-request för att skicka in min data och väntar på att requesten
-// ska bli klar.
+// Här skapar jag en asynkron funktion som gör en POST-request för att skicka in min data till en endpoint och väntar på
+// att requesten ska bli klar.
 async function submitHighScore() {
   // TODO: Lägg till krav på ifyllt namnfält.
 
-  try {
-    const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", { // await
-    // fetch skickar in min totala poäng.
+  try { // Här säger jag åt funktionen att försöka köra koden som skickar min POST request till en endpoint.
+    const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", { // Här
+      // säger jag åt await fetch: (försök) skicka in min totala poäng.
       method: "POST", // Här säger jag att min data ska skickas (en POST request).
-      body: JSON.stringify({     // Här görs namn och poäng om till JSON innan det skickas.
+      body: JSON.stringify({ // Här görs namn och poäng om till JSON innan det skickas.
         name: input1.value,
         score: score
       }),
@@ -102,11 +102,11 @@ async function submitHighScore() {
     // Här säger jag att ett meddelande ska visas när man klickat på submit-knappen.
     if (response.ok) { // Här kollar jag om requesten lyckades ...
       message.innerText = "Dina poäng har registrerats!";
-    } else { // ... eller inte (requesten har gått fram men servern svarar med ett fel)..
+    } else { // ... eller inte (requesten har gått fram men servern svarar med ett fel).
       message.innerText = "Något gick tyvärr fel, dina poäng kan inte visas.";
     }
     getScoreBoardData(); // Här hämtas scoreboarden först efter att min data skickats/Post requesten är klar.
-  } catch (error) {
+  } catch (error) { // Här säger jag att om requesten kraschar/något går fel ska det fångas i catch och ge ett felmeddelande.
   console.error(error);
   message.innerText = "Något gick tyvärr fel, dina poäng kunde inte registreras."; // Här visas ett meddelande om något gick fel med tex
     // nätverket och requesten inte går igenom.
