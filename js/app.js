@@ -17,6 +17,7 @@ const timerDisplay = document.getElementById('timerDisplay');
 const label1 = document.getElementById('label1');
 const input1 = document.getElementById('name');
 const scoreboard = document.getElementById('scoreboard');
+const message = document.getElementById('message');
 
 // UI Functions & Events
 // Här är knappen jag klickar på för att få poäng.
@@ -69,7 +70,7 @@ function startGame() {
 
 // Här markerar jag spelet som avslutat när tiden är slut.
 function endGame() {
-  gameEnded = true; // Här sättar jag spelet som avslutat.
+  gameEnded = true; // Här sätter jag spelet som avslutat.
   clearInterval(interval);   // Här stoppas timern.
   scoreDisplay.innerText = `Final score: ${score}`;   // Här visas min slutliga poäng när spelet är klart.
   button1.style.display = 'none'; // // Här göms click me-knappen efter att tiden är slut. (disabled = true hade
@@ -78,24 +79,38 @@ function endGame() {
   input1.style.display = 'block'; // Här blir namnfältet synligt.
   label1.style.display = 'block'; // Här visas texten "Name (3 to 16 characters):"
   button2.style.display = 'block'; // Här visas submit-knappen.
-  getScoreBoardData(); // Här hämtas den uppdaterade scoreboard när spelet är slut.
-  // TODO: Addera spärr input
+  getScoreBoardData(); // // Här hämtas den aktuella scoreboarden när spelet är slut.
+  // TODO: Addera spärr på input.
 
 }
 
 // Här skapar jag en asynkron funktion som gör en POST-request för att skicka in min data och väntar på att requesten
 // ska bli klar.
 async function submitHighScore() {
-  const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", { // await
+  // TODO: Lägg till krav på ifyllt namnfält.
+
+  try {
+    const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", { // await
     // fetch skickar in min totala poäng.
-    method: "POST", // Här säger jag att min data ska skickas (en POST request).
-    body: JSON.stringify({     // Här görs namn och poäng om till JSON innan det skickas.
-      name: input1.value,
-      score: score
-    }),
-  });
-  console.log(response);
-  getScoreBoardData(); // Här hämtas scoreboarden först efter att min data skickats/Post requesten är klar.
+      method: "POST", // Här säger jag att min data ska skickas (en POST request).
+      body: JSON.stringify({     // Här görs namn och poäng om till JSON innan det skickas.
+        name: input1.value,
+        score: score
+      }),
+    });
+    console.log(response);
+    // Här säger jag att ett meddelande ska visas när man klickat på submit-knappen.
+    if (response.ok) { // Här kollar jag om requesten lyckades ...
+      message.innerText = "Dina poäng har registrerats!";
+    } else { // ... eller inte (requesten har gått fram men servern svarar med ett fel)..
+      message.innerText = "Något gick tyvärr fel, dina poäng kan inte visas.";
+    }
+    getScoreBoardData(); // Här hämtas scoreboarden först efter att min data skickats/Post requesten är klar.
+  } catch (error) {
+  console.error(error);
+  message.innerText = "Något gick tyvärr fel, dina poäng kunde inte registreras."; // Här visas ett meddelande om något gick fel med tex
+    // nätverket och requesten inte går igenom.
+  }
 }
 
 // Här skapar jag en funktion som gör en GET request med fetch för att hämta scoreboarden.
