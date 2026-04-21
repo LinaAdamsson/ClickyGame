@@ -67,7 +67,16 @@ function endGame() {
   button2.style.display = 'block';
 }
 
-function submitHighScore() {
-  console.log(input1.value);
-  // TODO: POST value to API from Ben.
+async function submitHighScore() {
+  const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", {
+    method: "POST",
+    body: JSON.stringify({
+      name: input1.value,
+      score: score
+    }),
+  });
+
+  console.log(response);
 }
+  // TODO: Addera spärr input
+
