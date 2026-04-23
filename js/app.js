@@ -3,15 +3,19 @@
 // See a countdown timer so that I know how much time is left. setInterval();
 
 // Variables
+const initialTime = 5;
 let score = 0;
-let timeLeft = 5;
+let timeLeft = initialTime;
 let gameStarted = false;
 let gameEnded = false;
 let interval = null;
+let starsRunning = false;
+let starStartTimeout = null;
 
 // HTML DOM
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
+const button3 = document.getElementById('button3');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const timerDisplay = document.getElementById('timerDisplay');
 const label1 = document.getElementById('label1');
@@ -21,6 +25,7 @@ const scoreboardSection = document.getElementById('scoreboardSection');
 const scoreboard = document.getElementById('scoreboardList');
 const message = document.getElementById('message');
 const timerCircle = document.getElementById('timerCircle');
+const starsLayer = document.getElementById('stars-layer');
 
 // UI Functions & Events
 // Här är knappen jag klickar på för att få poäng.
@@ -40,9 +45,15 @@ button2.addEventListener('click', () => {
   submitHighScore();
 })
 
+// Här startas spelet om när restart-knappen klickas.
+button3.addEventListener('click', () => {
+  restartGame();
+})
+
 // Här döljs namnfält, label och submit-knapp tills spelet är slut.
 nameSection.style.display = 'none';
 scoreboardSection.style.display = 'none';
+button3.style.display = 'none';
 
 // Functions
 // Här ökas poängen för varje klick.
@@ -69,21 +80,60 @@ function startGame() {
   interval = setInterval(countdown,  1000);
   // Här ser jag till att spelet läses som redan startat så att det inte börjar om.
   gameStarted = true; // Här säger jag att spelet ska sättas som startat så att det inte startas flera gånger.
+  button1.innerText = "Press"; // Här ändras texten på knappen när spelet startar.
+  // Här väntar jag 4 sekunder efter att spelet startat innan stjärnorna börjar blinka.
+  starStartTimeout = setTimeout(() => {
+    if (!gameEnded) {
+      startStarBlinking(); // Här startar stjärnorna när spelet börjar.
+    }
+  }, 4000);
 }
 
 // Här markerar jag spelet som avslutat när tiden är slut.
 function endGame() {
   gameEnded = true; // Här sätter jag spelet som avslutat.
   clearInterval(interval); // Här stoppas timern.
+  clearTimeout(starStartTimeout); // Här stoppas eventuell väntan på att stjärnorna ska börja blinka.
+  starsRunning = false; // Här stoppas blinkande stjärnorna.
   scoreDisplay.innerHTML = `<span class="label">Your final score is </span>
   <span class="score">${score}</span>`
 
   // Här visas min slutliga poäng när spelet är klart.
-  button1.style.display = 'none'; // // Här göms click me-knappen efter att tiden är slut. (disabled = true hade
+  button1.style.display = 'none'; // // Här göms start game-knappen efter att tiden är slut. (disabled = true hade
   // inneburit att knappen syntes men inte skulle gå att klicka på.)
   // Här visas input och submit-knapp så att jag kan spara och skicka in mina poäng och namn.
   nameSection.style.display = 'block'; // Här visas nameSection med namnfält och submit-knapp.
+  button3.style.display = 'block'; // Här visas restart-knappen när spelet är slut.
   // TODO: Addera spärr på input.
+}
+
+// Här startas spelet om från början.
+function restartGame() {
+  clearInterval(interval); // Här stoppas eventuell tidigare timer.
+  clearTimeout(starStartTimeout); // Här stoppas eventuell väntan på att stjärnorna ska börja blinka.
+  starsRunning = false; // Här stoppas blinkande stjärnorna.
+  starsLayer.innerHTML = ""; // Här rensas eventuella stjärnor från sidan.
+
+  // Här rensas scoreboarden när spelet startas om.
+  scoreboard.innerHTML = "";
+
+  button1.innerText = "Start game"; // Här återställs texten på knappen när spelet startas om.
+  score = 0; // Här nollställs poängen.
+  timeLeft = initialTime; // Här återställs starttiden.
+  gameStarted = false; // Här sätts spelet tillbaka till ej startat.
+  gameEnded = false; // Här sätts spelet tillbaka till ej avslutat.
+  interval = null; // Här nollställs timer-variabeln.
+  starStartTimeout = null; // Här nollställs timeout-variabeln för stjärnstart.
+
+  scoreDisplay.innerText = score; // Här visas startpoängen igen.
+  timerDisplay.innerText = timeLeft; // Här visas starttiden igen.
+  message.innerText = ""; // Här rensas eventuellt statusmeddelande.
+  input1.value = ""; // Här rensas namnfältet.
+
+  button1.style.display = 'block'; // Här visas start game-knappen igen.
+  nameSection.style.display = 'none'; // Här döljs nameSection igen tills spelet är slut.
+  scoreboardSection.style.display = 'none'; // Här döljs scoreboarden igen när spelet startas om.
+  button3.style.display = 'none'; // Här döljs restart-knappen igen.
 }
 
 // Här skapar jag en asynkron funktion som gör en POST-request för att skicka in min data till en endpoint och väntar på
@@ -146,4 +196,51 @@ function getScoreBoardData() {
     .catch(error => {
       console.error('Fetch error:', error); // Här loggas och visas eventuella fel på fetchen.
     });
+}
+
+// Här skapar jag en funktion som låter en stjärna blinka till slumpmässigt på sidan.
+function createBlinkingStar() {
+  const star = document.createElement('div');
+  star.classList.add('star-blink');
+
+  // Här slumpas stjärnans storlek.
+  const size = Math.random() * 30 + 15;
+  star.style.width = `${size}px`;
+  star.style.height = `${size}px`;
+
+  // Här slumpas positionen på sidan.
+  star.style.left = `${Math.random() * window.innerWidth}px`;
+  star.style.top = `${Math.random() * window.innerHeight}px`;
+
+  starsLayer.appendChild(star);
+
+  // Här tas stjärnan bort efter att animationen är klar.
+  setTimeout(() => {
+    star.remove();
+  }, 800);
+}
+
+// Här skapar jag en funktion som låter stjärnor blinka med slumpmässiga intervall.
+function startStarBlinking() {
+  starsRunning = true;
+
+  function scheduleNextStar() {
+    if (!starsRunning) return; // Här stoppas stjärnorna om spelet är slut
+    createBlinkingStar();
+
+    // Här räknas hur långt spelet kommit så att stjärnorna kan blinka oftare ju längre spelet pågår.
+    const progress = (initialTime - timeLeft) / initialTime;
+
+    // Här sätts ett maxintervall som blir kortare över tid så att stjärnorna blir fler ju längre spelet pågår.
+    const maxDelay = 2000 - (progress * 1400);
+
+    // Här sätts ett minintervall som också blir kortare över tid så att stjärnorna kan blinka snabbare mot slutet.
+    const minDelay = 200 - (progress * 100);
+
+    // Här slumpas tiden tills nästa stjärna blinkar.
+    const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay;
+    setTimeout(scheduleNextStar, randomDelay);
+  }
+
+  scheduleNextStar();
 }

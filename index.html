@@ -24,55 +24,57 @@
 </head>
 
 <body>
+<div id="stars-layer"></div>
+<div class="game-container">
+  <h1>TAP-A-TWINKLE</h1>
+  <h2>Press button each time you catch a glimpse of a star</h2>
 
-<h1>TAP-A-TWINKLE</h1>
-
-<div class="top-panel">
-  <div class="stat-box">
-    <span class="stat-label">Current Score</span>
-    <span class="stat-value" id="scoreDisplay">0</span>
-  </div>
-  <div class="stat-box">
-    <span class="stat-label">Time Left</span>
-    <span class="stat-value" id="timerDisplay">60</span>
-  </div>
-</div>
-
-<div class="game-area">
-
-  <section class="play-section">
-    <!--<button id="button1">a</button>-->
-    <button id="button1">Click me</button>
-    <p id="message"></p>
-  </section>
-
-  <section class="submit-section" id="nameSection">
-    <h2>Submit Your Score</h2>
-    <label id="label1" for="name">Please enter your name below (3 to 16 characters):</label>
-
-    <div class="submit-controls">
-      <input
-        type="text"
-        id="name"
-        name="name"
-        required
-        minlength="3"
-        maxlength="8"
-        size="16" />
-
-      <button id="button2">Submit your score</button>
+  <div class="top-panel">
+    <div class="stat-box">
+      <span class="stat-label">Score</span>
+      <span class="stat-value" id="scoreDisplay">0</span>
     </div>
-  </section>
+    <div class="stat-box">
+      <span class="stat-label">Time Left</span>
+      <span class="stat-value" id="timerDisplay">60</span>
+    </div>
+  </div>
 
-  <section class="scoreboard-section" id="scoreboardSection">
-    <h2>Scoreboard</h2>
-    <ul id="scoreboardList">
-      <li>Loading scoreboard...</li>
-    </ul>
-  </section>
+  <div class="game-area">
 
+    <section class="play-section">
+      <!--<button id="button1">a</button>-->
+      <button id="button1">Start game</button>
+      <p id="message"></p>
+    </section>
+
+    <section class="submit-section" id="nameSection">
+      <label id="label1" for="name">Please enter your name below</label>
+
+      <div class="submit-controls">
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          minlength="3"
+          maxlength="8"
+          size="16" />
+
+        <button id="button2">Submit your score</button>
+        <button id="button3">Play again</button>
+      </div>
+    </section>
+
+    <section class="scoreboard-section" id="scoreboardSection">
+      <h2>Scoreboard</h2>
+      <ul id="scoreboardList">
+        <li>Loading scoreboard...</li>
+      </ul>
+    </section>
+
+  </div>
 </div>
-
 <script src="js/app.js"></script>
 
 </body>
