@@ -298,9 +298,9 @@ p {
   align-items: center;
   min-width: 140px;
   padding: 12px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.18);
+  /*border: 1px solid rgba(255, 255, 255, 0.3);*/
+  /*border-radius: 12px;*/
+  /*background: rgba(0, 0, 0, 0.18);*/
 }
 
 .stat-label {
@@ -324,6 +324,16 @@ p {
   font-family: 'Space Mono', monospace;
   font-size: 24px;
   color: white;
+
+  width: 80px;              /* storlek på cirkeln */
+  height: 80px;
+  border-radius: 50%;       /* gör den rund */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 3px solid gold;   /* själva ringen */
 }
 
 .game-area {
@@ -332,13 +342,14 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 60px;
 }
 
 .play-section,
 .submit-section,
 .scoreboard-section {
   width: 100%;
+  max-height: none;
   text-align: center;
 }
 
@@ -352,20 +363,24 @@ p {
 #button1 {
   width: 80px;
   height: 80px;
-  padding: 10px 20px;
-  font-family: 'Open Sans', sans-serif;
-  /* font-family: 'Starshines'; */
-  /* font-size: 40px; */
-  font-size: 20px;
+  font-family: 'Starshines';
+  font-size: 15px;
   border-radius: 50%;
-  background-color: black;
-  color: white;
-  border: none;
+  background-color: white;
+  color: black;
+  /*border: 1px solid white;*/
   cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.1; /* Gör att raderna sitter tightare */
+
 }
 
 #button1:hover {
-  background-color: white;
+  background-color: gold;
   color: black;
 }
 
@@ -437,8 +452,6 @@ p {
   width: 100%;
   max-width: 320px;
   min-height: 120px;
-  max-height: 260px;
-  overflow-y: auto;
   margin: 0 auto;
   padding: 15px;
   color: white;
@@ -449,22 +462,30 @@ p {
   box-sizing: border-box;
 }
 
-#scoreboardList {
-  margin: 0;
-  padding-left: 20px;
-}
-
-#scoreboardList li {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 6px 0;
-  color: white;
-}
-
 .name {
   font-family: 'Open Sans', sans-serif;
 }
+
+#scoreboardList {
+  list-style: none; /* tar bort default */
+  counter-reset: rank;
+  padding-left: 0;
+}
+
+#scoreboardList li {
+  counter-increment: rank;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#scoreboardList li::before {
+  content: counter(rank) ". ";
+  margin-right: 10px;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+}
+
 
 #scoreboardList .score {
   font-family: 'Starshines', sans-serif;
@@ -513,3 +534,16 @@ h1,
   position: relative;
   z-index: 1;
 }
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#finalScore {
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+

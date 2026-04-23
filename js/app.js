@@ -15,7 +15,6 @@ let starStartTimeout = null;
 // HTML DOM
 const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
-const button3 = document.getElementById('button3');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const timerDisplay = document.getElementById('timerDisplay');
 const label1 = document.getElementById('label1');
@@ -24,36 +23,44 @@ const nameSection = document.getElementById('nameSection');
 const scoreboardSection = document.getElementById('scoreboardSection');
 const scoreboard = document.getElementById('scoreboardList');
 const message = document.getElementById('message');
+const finalScore = document.getElementById('finalScore');
 const timerCircle = document.getElementById('timerCircle');
 const starsLayer = document.getElementById('stars-layer');
+const topPanel = document.getElementById('topPanel');
 
 // UI Functions & Events
 // Här är knappen jag klickar på för att få poäng.
 button1.addEventListener('click', () => { // Här ökas poängen för varje klick.
+
+  // Här startas spelet om ifall det redan är avslutat.
+  if (gameEnded) {
+    restartGame();
+    return;
+  }
+
+  // Här startas spelet första gången jag klickar.
+  if (!gameStarted) {
+    startGame();
+    return;
+  }
+
+  // Här ökas poängen så länge spelet är igång.
   if (!gameEnded) { // (!gameEnded = om spelet fortfarande är igång).
     increaseScore();
   }
 
-// Här startas spelet och timern går igång.
-  if (!gameStarted) {
-    startGame();
-  }
-})
+});
 
 // Här skickas namnet och poängen in när submit-knappen klickas.
 button2.addEventListener('click', () => {
   submitHighScore();
 })
 
-// Här startas spelet om när restart-knappen klickas.
-button3.addEventListener('click', () => {
-  restartGame();
-})
-
 // Här döljs namnfält, label och submit-knapp tills spelet är slut.
 nameSection.style.display = 'none';
 scoreboardSection.style.display = 'none';
-button3.style.display = 'none';
+topPanel.style.visibility = 'hidden'; // Här döljs top-panelen tills spelet startar.
+finalScore.style.display = 'none'; // Här döljs slutpoängen tills spelet är slut.
 
 // Functions
 // Här ökas poängen för varje klick.
@@ -78,13 +85,18 @@ function countdown() {
 function startGame() {
   // Här sätts nedräkningen igång och körs varje sekund.
   interval = setInterval(countdown,  1000);
+
   // Här ser jag till att spelet läses som redan startat så att det inte börjar om.
-  gameStarted = true; // Här säger jag att spelet ska sättas som startat så att det inte startas flera gånger.
-  button1.innerText = "Press"; // Här ändras texten på knappen när spelet startar.
+  gameStarted = true;
+
+  button1.innerText = "CATCH"; // Här ändras texten på knappen när spelet startar.
+
+  topPanel.style.visibility = 'visible'; // Här gör jag top-panelen synlig igen när spelet börjar.
+
   // Här väntar jag 4 sekunder efter att spelet startat innan stjärnorna börjar blinka.
   starStartTimeout = setTimeout(() => {
     if (!gameEnded) {
-      startStarBlinking(); // Här startar stjärnorna när spelet börjar.
+      startStarBlinking();
     }
   }, 4000);
 }
@@ -95,15 +107,21 @@ function endGame() {
   clearInterval(interval); // Här stoppas timern.
   clearTimeout(starStartTimeout); // Här stoppas eventuell väntan på att stjärnorna ska börja blinka.
   starsRunning = false; // Här stoppas blinkande stjärnorna.
-  scoreDisplay.innerHTML = `<span class="label">Your final score is </span>
-  <span class="score">${score}</span>`
 
-  // Här visas min slutliga poäng när spelet är klart.
-  button1.style.display = 'none'; // // Här göms start game-knappen efter att tiden är slut. (disabled = true hade
-  // inneburit att knappen syntes men inte skulle gå att klicka på.)
+  // Här döljs score och timer när spelet är slut.
+  topPanel.style.visibility = 'hidden';
+
+  // Här visas slutpoängen ovanför knappen när spelet är slut.
+  finalScore.innerHTML = `<span class="label">YOU CAUGHT </span>
+<span class="score">${score}</span><span class="label"> STARS! </span>`;
+  finalScore.style.display = 'block';
+
+  // Här ändras samma knapp till att bli börja om-spelet-knapp.
+  button1.style.display = 'block'; // Här visas knappen fortfarande när spelet är slut.
+  button1.innerText = 'PLAY AGAIN?'; // Här ändras texten så att samma knapp används för att starta om spelet.
+
   // Här visas input och submit-knapp så att jag kan spara och skicka in mina poäng och namn.
   nameSection.style.display = 'block'; // Här visas nameSection med namnfält och submit-knapp.
-  button3.style.display = 'block'; // Här visas restart-knappen när spelet är slut.
   // TODO: Addera spärr på input.
 }
 
@@ -113,27 +131,26 @@ function restartGame() {
   clearTimeout(starStartTimeout); // Här stoppas eventuell väntan på att stjärnorna ska börja blinka.
   starsRunning = false; // Här stoppas blinkande stjärnorna.
   starsLayer.innerHTML = ""; // Här rensas eventuella stjärnor från sidan.
-
-  // Här rensas scoreboarden när spelet startas om.
-  scoreboard.innerHTML = "";
-
-  button1.innerText = "Start game"; // Här återställs texten på knappen när spelet startas om.
   score = 0; // Här nollställs poängen.
   timeLeft = initialTime; // Här återställs starttiden.
   gameStarted = false; // Här sätts spelet tillbaka till ej startat.
   gameEnded = false; // Här sätts spelet tillbaka till ej avslutat.
   interval = null; // Här nollställs timer-variabeln.
   starStartTimeout = null; // Här nollställs timeout-variabeln för stjärnstart.
-
   scoreDisplay.innerText = score; // Här visas startpoängen igen.
   timerDisplay.innerText = timeLeft; // Här visas starttiden igen.
   message.innerText = ""; // Här rensas eventuellt statusmeddelande.
   input1.value = ""; // Här rensas namnfältet.
 
+  // Här döljs slutpoängen igen när spelet startas om.
+  finalScore.style.display = 'none';
+  finalScore.innerHTML = "";
+
   button1.style.display = 'block'; // Här visas start game-knappen igen.
+  button1.innerText = "START GAME"; // Här återställs texten på knappen när spelet startas om.
   nameSection.style.display = 'none'; // Här döljs nameSection igen tills spelet är slut.
   scoreboardSection.style.display = 'none'; // Här döljs scoreboarden igen när spelet startas om.
-  button3.style.display = 'none'; // Här döljs restart-knappen igen.
+  topPanel.style.visibility = 'hidden'; // Här döljs top-panelen tills spelet startar.
 }
 
 // Här skapar jag en asynkron funktion som gör en POST-request för att skicka in min data till en endpoint och väntar på

@@ -27,15 +27,16 @@
 <div id="stars-layer"></div>
 <div class="game-container">
   <h1>TAP-A-TWINKLE</h1>
-  <h2>Press button each time you catch a glimpse of a star</h2>
+  <!--<h1>TWINKLE CATCHER</h1>-->
+  <h2>STARS WILL TWINKLE ACROSS THE SKY <br>CATCH THEM FAST BEFORE THEY PASS YOU BY</h2>
 
-  <div class="top-panel">
+  <div class="top-panel" id="topPanel">
     <div class="stat-box">
-      <span class="stat-label">Score</span>
+      <!--<span class="stat-label">Score</span>-->
       <span class="stat-value" id="scoreDisplay">0</span>
     </div>
     <div class="stat-box">
-      <span class="stat-label">Time Left</span>
+      <!--<span class="stat-label">Time Left</span>-->
       <span class="stat-value" id="timerDisplay">60</span>
     </div>
   </div>
@@ -43,13 +44,14 @@
   <div class="game-area">
 
     <section class="play-section">
+      <p id="finalScore"></p>
       <!--<button id="button1">a</button>-->
-      <button id="button1">Start game</button>
+      <button id="button1">START GAME</button>
       <p id="message"></p>
     </section>
 
     <section class="submit-section" id="nameSection">
-      <label id="label1" for="name">Please enter your name below</label>
+      <label id="label1" for="name">Or enter your name below to submit your score</label>
 
       <div class="submit-controls">
         <input
@@ -61,16 +63,15 @@
           maxlength="8"
           size="16" />
 
-        <button id="button2">Submit your score</button>
-        <button id="button3">Play again</button>
+        <button id="button2">Submit score</button>
       </div>
     </section>
 
     <section class="scoreboard-section" id="scoreboardSection">
-      <h2>Scoreboard</h2>
-      <ul id="scoreboardList">
+      <h2>TOP 10 STAR CATCHERS</h2>
+      <ol id="scoreboardList">
         <li>Loading scoreboard...</li>
-      </ul>
+      </ol>
     </section>
 
   </div>
