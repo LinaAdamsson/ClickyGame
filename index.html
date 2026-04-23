@@ -19,33 +19,59 @@
   <link rel="apple-touch-icon" href="icon.png">
 
   <link rel="manifest" href="site.webmanifest">
+  <!--<link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">-->
   <meta name="theme-color" content="#fafafa">
 </head>
 
 <body>
 
-<!-- Add your site or application content here -->
 <h1>TAP-A-TWINKLE</h1>
-<p id="scoreDisplay">0</p>
-<p id="timerDisplay">60</p>
-<button id="button1">★</button>
-<p id="message"></p>
 
+<div class="top-panel">
+  <div class="stat-box">
+    <span class="stat-label">Current Score</span>
+    <span class="stat-value" id="scoreDisplay">0</span>
+  </div>
+  <div class="stat-box">
+    <span class="stat-label">Time Left</span>
+    <span class="stat-value" id="timerDisplay">60</span>
+  </div>
+</div>
 
-<label id="label1" for="name">Name (3 to 16 characters):</label>
+<div class="game-area">
 
-<input
-  type="text"
-  id="name"
-  name="name"
-  required
-  minlength="3"
-  maxlength="8"
-  size="16" />
+  <section class="play-section">
+    <!--<button id="button1">a</button>-->
+    <button id="button1">Click me</button>
+    <p id="message"></p>
+  </section>
 
-<button id="button2">Submit High Score</button>
+  <section class="submit-section" id="nameSection">
+    <h2>Submit Your Score</h2>
+    <label id="label1" for="name">Please enter your name below (3 to 16 characters):</label>
 
-<div id="scoreboard"></div>
+    <div class="submit-controls">
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        minlength="3"
+        maxlength="8"
+        size="16" />
+
+      <button id="button2">Submit your score</button>
+    </div>
+  </section>
+
+  <section class="scoreboard-section" id="scoreboardSection">
+    <h2>Scoreboard</h2>
+    <ul id="scoreboardList">
+      <li>Loading scoreboard...</li>
+    </ul>
+  </section>
+
+</div>
 
 <script src="js/app.js"></script>
 

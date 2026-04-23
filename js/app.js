@@ -16,8 +16,11 @@ const scoreDisplay = document.getElementById('scoreDisplay');
 const timerDisplay = document.getElementById('timerDisplay');
 const label1 = document.getElementById('label1');
 const input1 = document.getElementById('name');
-const scoreboard = document.getElementById('scoreboard');
+const nameSection = document.getElementById('nameSection');
+const scoreboardSection = document.getElementById('scoreboardSection');
+const scoreboard = document.getElementById('scoreboardList');
 const message = document.getElementById('message');
+const timerCircle = document.getElementById('timerCircle');
 
 // UI Functions & Events
 // Här är knappen jag klickar på för att få poäng.
@@ -25,6 +28,7 @@ button1.addEventListener('click', () => { // Här ökas poängen för varje klic
   if (!gameEnded) { // (!gameEnded = om spelet fortfarande är igång).
     increaseScore();
   }
+
 // Här startas spelet och timern går igång.
   if (!gameStarted) {
     startGame();
@@ -37,10 +41,8 @@ button2.addEventListener('click', () => {
 })
 
 // Här döljs namnfält, label och submit-knapp tills spelet är slut.
-input1.style.display = 'none';
-label1.style.display = 'none';
-button2.style.display = 'none';
-scoreboard.style.display = 'none';
+nameSection.style.display = 'none';
+scoreboardSection.style.display = 'none';
 
 // Functions
 // Här ökas poängen för varje klick.
@@ -72,23 +74,22 @@ function startGame() {
 // Här markerar jag spelet som avslutat när tiden är slut.
 function endGame() {
   gameEnded = true; // Här sätter jag spelet som avslutat.
-  clearInterval(interval);   // Här stoppas timern.
-  scoreDisplay.innerText = `Final score: ${score}`;   // Här visas min slutliga poäng när spelet är klart.
+  clearInterval(interval); // Här stoppas timern.
+  scoreDisplay.innerHTML = `<span class="label">Your final score is </span>
+  <span class="score">${score}</span>`
+
+  // Här visas min slutliga poäng när spelet är klart.
   button1.style.display = 'none'; // // Här göms click me-knappen efter att tiden är slut. (disabled = true hade
   // inneburit att knappen syntes men inte skulle gå att klicka på.)
   // Här visas input och submit-knapp så att jag kan spara och skicka in mina poäng och namn.
-  input1.style.display = 'block'; // Här blir namnfältet synligt.
-  label1.style.display = 'block'; // Här visas texten "Name (3 to 16 characters):"
-  button2.style.display = 'block'; // Här visas submit-knappen.
+  nameSection.style.display = 'block'; // Här visas nameSection med namnfält och submit-knapp.
   // TODO: Addera spärr på input.
-
 }
 
 // Här skapar jag en asynkron funktion som gör en POST-request för att skicka in min data till en endpoint och väntar på
 // att requesten ska bli klar.
 async function submitHighScore() {
   // TODO: Lägg till krav på ifyllt namnfält.
-
   try { // Här säger jag åt funktionen att försöka köra koden som skickar min POST request till en endpoint.
     const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", { // Här
       // säger jag åt await fetch: (försök) skicka in min totala poäng.
@@ -100,17 +101,21 @@ async function submitHighScore() {
     });
     console.log(response);
     // Här säger jag att ett meddelande ska visas när man klickat på submit-knappen.
-    if (response.ok) { // Här kollar jag om requesten lyckades ...
-      message.innerText = "Dina poäng har registrerats!";
-    } else { // ... eller inte (requesten har gått fram men servern svarar med ett fel).
-      message.innerText = "Något gick tyvärr fel, dina poäng kan inte visas.";
+    if (response.ok) { // Här kollar jag om requesten lyckades.
+      message.innerText = "Your score is registered!";
+
+      setTimeout(() => {
+        getScoreBoardData(); // Här hämtas den aktuella scoreboarden när spelet är slut, efter att min data skickats/Post
+        // requesten är klar.
+        scoreboardSection.style.display = 'block';
+      }, 2000); // väntar 2 sek innan scoreboarden hämtas
+
+    } else { // Om requesten har gått fram men servern svarar med ett fel får man detta svar.
+      message.innerText = "Something went wrong, your score is not available.";
     }
-    getScoreBoardData(); // Här hämtas den aktuella scoreboarden när spelet är slut, efter att min data skickats/Post
-    // requesten är klar.
-    scoreboard.style.display = 'block';
   } catch (error) { // Här säger jag att om requesten kraschar/något går fel ska det fångas i catch och ge ett felmeddelande.
-  console.error(error);
-  message.innerText = "Något gick tyvärr fel, dina poäng kunde inte registreras."; // Här visas ett meddelande om något
+    console.error(error);
+    message.innerText = "Something went wrong, your score could not be registered."; // Här visas ett meddelande om något
     // gick fel med tex nätverket och requesten inte går igenom.
   }
 }
@@ -127,9 +132,15 @@ function getScoreBoardData() {
     .then(data => {
       console.log('Scoreboard data:', data); // Här loggas scoreboard-datan.
       scoreboard.innerHTML = ""; // Här rensas den gamla scoreboarden innan den nya skrivs ut.
-      // TODO: Sortera listan baserat på poäng innan loopen körs så index användas för att visa placering.
-      data.forEach((player, index) => { // Här säger jag att funktionen ska loopa genom alla spelare i scoreboarden.
-        scoreboard.innerHTML += `<p>${player.name}: ${player.score}</p>`; // Här görs varje namn och poäng synlig.
+      data.sort((a, b) => b.score - a.score); // Här sorterar jag listan baserat på högsta poäng först.
+      const top10 = data.slice(0, 10); // Här tar jag ut topp 10.
+      top10.forEach((player, index) => { // Här loopar jag genom topp 10 och skriver ut dem.
+        scoreboard.innerHTML += `
+          <li>
+            <span class="name">${player.name}</span>
+            <span class="score">${player.score}</span>
+          </li>
+        `;
       });
     })
     .catch(error => {

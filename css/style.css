@@ -176,9 +176,9 @@ textarea {
 }
 
 @media print,
-  (-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 1.25dppx),
-  (min-resolution: 120dpi) {
+(-webkit-min-device-pixel-ratio: 1.25),
+(min-resolution: 1.25dppx),
+(min-resolution: 120dpi) {
   /* Style adjustments for high resolution devices */
 }
 
@@ -251,14 +251,15 @@ textarea {
 
 body {
   background-image: url('../img/ezio-auditore-_9ML_4yrPEY-unsplash.jpg');
-  background-repeat: repeat;
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
+  padding: 40px 20px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
@@ -267,10 +268,50 @@ h1 {
   text-align: center;
   font-size: 5em;
   color: gold;
+  margin: 0 0 24px 0;
+}
+
+h2 {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  font-size: 1.2rem;
+  margin: 0 0 12px 0;
+  text-align: center;
 }
 
 p {
+  font-family: 'Open Sans', sans-serif;
   color: #fff;
+}
+
+.top-panel {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  padding: 12px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.stat-label {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  color: white;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  color: white;
 }
 
 #scoreDisplay {
@@ -280,17 +321,42 @@ p {
 }
 
 #timerDisplay {
-  font-family: 'Starshines';
+  font-family: 'Space Mono', monospace;
   font-size: 24px;
   color: white;
+}
+
+.game-area {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.play-section,
+.submit-section,
+.scoreboard-section {
+  width: 100%;
+  text-align: center;
+}
+
+.play-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
 #button1 {
   width: 80px;
   height: 80px;
   padding: 10px 20px;
-  font-family: 'Starshines';
-  font-size: 40px;
+  font-family: 'Open Sans', sans-serif;
+  /* font-family: 'Starshines'; */
+  /* font-size: 40px; */
+  font-size: 20px;
   border-radius: 50%;
   background-color: black;
   color: white;
@@ -303,6 +369,105 @@ p {
   color: black;
 }
 
+#button2 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+#button2:hover {
+  background-color: white;
+  color: black;
+}
+
 #label1 {
+  font-family: 'Open Sans', sans-serif;
   color: #fff;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.submit-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  font-size: 20px;
+}
+
+.score {
+  font-family: 'Starshines', sans-serif;
+  font-size: 40px;
+  color: gold;
+}
+
+#name {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  padding: 4px 0;
+  border: none;
+  border-bottom: 1px solid white;
+  outline: none;
+  background: transparent;
+  color: white;
+  text-align: center;
+}
+
+#name::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#message {
+  margin: 0;
+  min-height: 24px;
+  text-align: center;
+}
+
+#scoreboardSection {
+  width: 100%;
+  max-width: 320px;
+  min-height: 120px;
+  max-height: 260px;
+  overflow-y: auto;
+  margin: 0 auto;
+  padding: 15px;
+  color: white;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: left;
+  background: rgba(0, 0, 0, 0.18);
+  box-sizing: border-box;
+}
+
+#scoreboardList {
+  margin: 0;
+  padding-left: 20px;
+}
+
+#scoreboardList li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 6px 0;
+  color: white;
+}
+
+.name {
+  font-family: 'Open Sans', sans-serif;
+}
+
+#scoreboardList .score {
+  font-family: 'Starshines', sans-serif;
+  font-size: 24px;
+  color: gold;
 }
