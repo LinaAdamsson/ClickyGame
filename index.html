@@ -27,9 +27,7 @@
 <div id="stars-layer"></div>
 <div class="game-container">
   <h1>TAP-A-TWINKLE</h1>
-  <!--<h1>TWINKLE CATCHER</h1>-->
   <h2>STARS WILL TWINKLE ACROSS THE SKY <br>CATCH THEM FAST BEFORE THEY PASS YOU BY</h2>
-
   <div class="game-status-area">
     <div class="top-panel" id="topPanel">
       <div class="stat-box">
@@ -39,37 +37,24 @@
         <span class="stat-value" id="timerDisplay">60</span>
       </div>
     </div>
-
     <p id="finalScore"></p>
   </div>
   <div class="game-area">
-
     <section class="play-section">
       <!--<button id="button1">a</button>-->
       <button id="button1">START GAME</button>
       <p id="message"></p>
     </section>
-
     <section class="submit-section" id="nameSection">
       <label id="label1" for="name">Enter your name below to submit your score</label>
-
       <div class="submit-controls">
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          minlength="3"
-          maxlength="8"
-          size="16" />
-
+        <input type="text" id="name" name="name" required minlength="3" maxlength="8" size="16" />
         <button id="button2">Submit score</button>
       </div>
     </section>
     <div id="scoreboardModal" class="modal">
       <div class="modal-content">
         <button id="closeModal">×</button>
-
         <section class="scoreboard-section" id="scoreboardSection">
           <h2>TOP 10 STAR CATCHERS</h2>
           <ol id="scoreboardList">
@@ -78,7 +63,6 @@
         </section>
       </div>
     </div>
-
   </div>
 </div>
 <script src="js/app.js"></script>

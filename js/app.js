@@ -49,17 +49,14 @@ button1.addEventListener('click', () => { // Här ökas poängen för varje klic
     increaseScore();
   }
 });
-
 // Här skickas namnet och poängen in när submit-knappen klickas.
 button2.addEventListener('click', () => {
   submitHighScore();
 })
-
 // Här stängs scoreboard-popupen när man klickar på stäng-knappen.
 closeModal.addEventListener('click', () => {
   scoreboardModal.style.display = 'none';
 })
-
 // Här döljs namnfält, label och submit-knapp tills spelet är slut.
 nameSection.style.display = 'none';
 scoreboardSection.style.display = 'none';
@@ -89,14 +86,10 @@ function countdown() {
 function startGame() {
   // Här sätts nedräkningen igång och körs varje sekund.
   interval = setInterval(countdown,  1000);
-
   // Här ser jag till att spelet läses som redan startat så att det inte börjar om.
   gameStarted = true;
-
   button1.innerText = "CATCH"; // Här ändras texten på knappen när spelet startar.
-
   topPanel.style.visibility = 'visible'; // Här gör jag top-panelen synlig igen när spelet börjar.
-
   // Här väntar jag 4 sekunder efter att spelet startat innan stjärnorna börjar blinka.
   starStartTimeout = setTimeout(() => {
     if (!gameEnded) {
@@ -165,7 +158,6 @@ async function submitHighScore() {
     message.innerText = "Please enter your name before submitting your score.";
     return; // stoppar funktionen direkt
   }
-
   // Här stoppar jag funktionen om resultatet redan har skickats.
   if (scoreSubmitted) {
     message.innerText = "Your score has already been submitted.";
@@ -187,7 +179,6 @@ async function submitHighScore() {
     // Här säger jag att ett meddelande ska visas när man klickat på submit-knappen.
     if (response.ok) { // Här kollar jag om requesten lyckades.
       message.innerText = "Your score has been registered!";
-
       setTimeout(() => {
         getScoreBoardData(); // Här hämtas den aktuella scoreboarden när spelet är slut, efter att min data skickats/Post
         // requesten är klar.
@@ -245,45 +236,34 @@ function getScoreBoardData() {
 function createBlinkingStar() {
   const star = document.createElement('div');
   star.classList.add('star-blink');
-
   // Här slumpas stjärnans storlek.
   const size = Math.random() * 30 + 15;
   star.style.width = `${size}px`;
   star.style.height = `${size}px`;
-
   // Här slumpas positionen på sidan.
   star.style.left = `${Math.random() * window.innerWidth}px`;
   star.style.top = `${Math.random() * window.innerHeight}px`;
-
   starsLayer.appendChild(star);
-
   // Här tas stjärnan bort efter att animationen är klar.
   setTimeout(() => {
     star.remove();
   }, 800);
 }
 
-// Här skapar jag en funktion som låter stjärnor blinka med slumpmässiga intervall.
 function startStarBlinking() {
   starsRunning = true;
-
   function scheduleNextStar() {
     if (!starsRunning) return; // Här stoppas stjärnorna om spelet är slut
     createBlinkingStar();
-
     // Här räknas hur långt spelet kommit så att stjärnorna kan blinka oftare ju längre spelet pågår.
     const progress = (initialTime - timeLeft) / initialTime;
-
     // Här sätts ett maxintervall som blir kortare över tid så att stjärnorna blir fler ju längre spelet pågår.
     const maxDelay = 2000 - (progress * 1400);
-
     // Här sätts ett minintervall som också blir kortare över tid så att stjärnorna kan blinka snabbare mot slutet.
     const minDelay = 200 - (progress * 100);
-
     // Här slumpas tiden tills nästa stjärna blinkar.
     const randomDelay = Math.random() * (maxDelay - minDelay) + minDelay;
     setTimeout(scheduleNextStar, randomDelay);
   }
-
   scheduleNextStar();
 }
