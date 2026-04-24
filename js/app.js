@@ -3,7 +3,7 @@
 // See a countdown timer so that I know how much time is left. setInterval();
 
 // Variables
-const initialTime = 5;
+const initialTime = 60;
 let score = 0;
 let timeLeft = initialTime;
 let gameStarted = false;
