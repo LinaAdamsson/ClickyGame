@@ -18,7 +18,7 @@ const button1 = document.getElementById('button1');
 const button2 = document.getElementById('button2');
 const scoreDisplay = document.getElementById('scoreDisplay');
 const timerDisplay = document.getElementById('timerDisplay');
-const label1 = document.getElementById('label1');
+/* const label1 = document.getElementById('label1'); */
 const input1 = document.getElementById('name');
 const nameSection = document.getElementById('nameSection');
 const scoreboardSection = document.getElementById('scoreboardSection');
@@ -27,31 +27,27 @@ const scoreboardModal = document.getElementById('scoreboardModal');
 const closeModal = document.getElementById('closeModal');
 const message = document.getElementById('message');
 const finalScore = document.getElementById('finalScore');
-const timerCircle = document.getElementById('timerCircle');
+/* const timerCircle = document.getElementById('timerCircle'); */
 const starsLayer = document.getElementById('stars-layer');
 const topPanel = document.getElementById('topPanel');
 
 // UI Functions & Events
 // Här är knappen jag klickar på för att få poäng.
 button1.addEventListener('click', () => { // Här ökas poängen för varje klick.
-
   // Här startas spelet om ifall det redan är avslutat.
   if (gameEnded) {
     restartGame();
     return;
   }
-
   // Här startas spelet första gången jag klickar.
   if (!gameStarted) {
     startGame();
     return;
   }
-
   // Här ökas poängen så länge spelet är igång.
   if (!gameEnded) { // (!gameEnded = om spelet fortfarande är igång).
     increaseScore();
   }
-
 });
 
 // Här skickas namnet och poängen in när submit-knappen klickas.
@@ -87,7 +83,6 @@ function countdown() {
     timerDisplay.innerText = 0;
     endGame();
   }
-  // TODO: Sida?
 }
 
 // Här säger jag vad som ska ske för att starta spelet.

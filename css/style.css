@@ -480,6 +480,7 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: 'Courier', sans-serif;
 }
 
 #scoreboardList li::before {
