@@ -3,7 +3,7 @@
 // See a countdown timer so that I know how much time is left. setInterval();
 
 // Variables
-const initialTime = 20;
+const initialTime = 5;
 let score = 0;
 let timeLeft = initialTime;
 let gameStarted = false;
@@ -191,7 +191,7 @@ async function submitHighScore() {
     console.log(response);
     // Här säger jag att ett meddelande ska visas när man klickat på submit-knappen.
     if (response.ok) { // Här kollar jag om requesten lyckades.
-      message.innerText = "Your score is registered!";
+      message.innerText = "Your score has been registered!";
 
       setTimeout(() => {
         getScoreBoardData(); // Här hämtas den aktuella scoreboarden när spelet är slut, efter att min data skickats/Post
