@@ -30,28 +30,28 @@
   <!--<h1>TWINKLE CATCHER</h1>-->
   <h2>STARS WILL TWINKLE ACROSS THE SKY <br>CATCH THEM FAST BEFORE THEY PASS YOU BY</h2>
 
-  <div class="top-panel" id="topPanel">
-    <div class="stat-box">
-      <!--<span class="stat-label">Score</span>-->
-      <span class="stat-value" id="scoreDisplay">0</span>
+  <div class="game-status-area">
+    <div class="top-panel" id="topPanel">
+      <div class="stat-box">
+        <span class="stat-value" id="scoreDisplay">0</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-value" id="timerDisplay">60</span>
+      </div>
     </div>
-    <div class="stat-box">
-      <!--<span class="stat-label">Time Left</span>-->
-      <span class="stat-value" id="timerDisplay">60</span>
-    </div>
-  </div>
 
+    <p id="finalScore"></p>
+  </div>
   <div class="game-area">
 
     <section class="play-section">
-      <p id="finalScore"></p>
       <!--<button id="button1">a</button>-->
       <button id="button1">START GAME</button>
       <p id="message"></p>
     </section>
 
     <section class="submit-section" id="nameSection">
-      <label id="label1" for="name">Or enter your name below to submit your score</label>
+      <label id="label1" for="name">Enter your name below to submit your score</label>
 
       <div class="submit-controls">
         <input
@@ -66,13 +66,18 @@
         <button id="button2">Submit score</button>
       </div>
     </section>
+    <div id="scoreboardModal" class="modal">
+      <div class="modal-content">
+        <button id="closeModal">×</button>
 
-    <section class="scoreboard-section" id="scoreboardSection">
-      <h2>TOP 10 STAR CATCHERS</h2>
-      <ol id="scoreboardList">
-        <li>Loading scoreboard...</li>
-      </ol>
-    </section>
+        <section class="scoreboard-section" id="scoreboardSection">
+          <h2>TOP 10 STAR CATCHERS</h2>
+          <ol id="scoreboardList">
+            <li>Loading scoreboard...</li>
+          </ol>
+        </section>
+      </div>
+    </div>
 
   </div>
 </div>

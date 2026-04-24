@@ -3,7 +3,7 @@
 // See a countdown timer so that I know how much time is left. setInterval();
 
 // Variables
-const initialTime = 5;
+const initialTime = 20;
 let score = 0;
 let timeLeft = initialTime;
 let gameStarted = false;
@@ -11,6 +11,7 @@ let gameEnded = false;
 let interval = null;
 let starsRunning = false;
 let starStartTimeout = null;
+let scoreSubmitted = false;
 
 // HTML DOM
 const button1 = document.getElementById('button1');
@@ -22,6 +23,8 @@ const input1 = document.getElementById('name');
 const nameSection = document.getElementById('nameSection');
 const scoreboardSection = document.getElementById('scoreboardSection');
 const scoreboard = document.getElementById('scoreboardList');
+const scoreboardModal = document.getElementById('scoreboardModal');
+const closeModal = document.getElementById('closeModal');
 const message = document.getElementById('message');
 const finalScore = document.getElementById('finalScore');
 const timerCircle = document.getElementById('timerCircle');
@@ -56,9 +59,15 @@ button2.addEventListener('click', () => {
   submitHighScore();
 })
 
+// Här stängs scoreboard-popupen när man klickar på stäng-knappen.
+closeModal.addEventListener('click', () => {
+  scoreboardModal.style.display = 'none';
+})
+
 // Här döljs namnfält, label och submit-knapp tills spelet är slut.
 nameSection.style.display = 'none';
 scoreboardSection.style.display = 'none';
+scoreboardModal.style.display = 'none'; // Här döljs scoreboard-popupen tills scoreboarden ska visas.
 topPanel.style.visibility = 'hidden'; // Här döljs top-panelen tills spelet startar.
 finalScore.style.display = 'none'; // Här döljs slutpoängen tills spelet är slut.
 
@@ -116,9 +125,7 @@ function endGame() {
 <span class="score">${score}</span><span class="label"> STARS! </span>`;
   finalScore.style.display = 'block';
 
-  // Här ändras samma knapp till att bli börja om-spelet-knapp.
-  button1.style.display = 'block'; // Här visas knappen fortfarande när spelet är slut.
-  button1.innerText = 'PLAY AGAIN?'; // Här ändras texten så att samma knapp används för att starta om spelet.
+  button1.style.display = 'none'; // Här döljs knappen tills score är skickat
 
   // Här visas input och submit-knapp så att jag kan spara och skicka in mina poäng och namn.
   nameSection.style.display = 'block'; // Här visas nameSection med namnfält och submit-knapp.
@@ -141,7 +148,8 @@ function restartGame() {
   timerDisplay.innerText = timeLeft; // Här visas starttiden igen.
   message.innerText = ""; // Här rensas eventuellt statusmeddelande.
   input1.value = ""; // Här rensas namnfältet.
-
+  scoreSubmitted = false; // Här gör jag det möjligt att skicka in ett nytt resultat efter restart.
+  button2.disabled = false; // Här aktiveras submit-knappen igen.
   // Här döljs slutpoängen igen när spelet startas om.
   finalScore.style.display = 'none';
   finalScore.innerHTML = "";
@@ -150,13 +158,27 @@ function restartGame() {
   button1.innerText = "START GAME"; // Här återställs texten på knappen när spelet startas om.
   nameSection.style.display = 'none'; // Här döljs nameSection igen tills spelet är slut.
   scoreboardSection.style.display = 'none'; // Här döljs scoreboarden igen när spelet startas om.
+  scoreboardModal.style.display = 'none'; // Här döljs scoreboard-popupen igen när spelet startas om.
   topPanel.style.visibility = 'hidden'; // Här döljs top-panelen tills spelet startar.
 }
 
 // Här skapar jag en asynkron funktion som gör en POST-request för att skicka in min data till en endpoint och väntar på
 // att requesten ska bli klar.
 async function submitHighScore() {
-  // TODO: Lägg till krav på ifyllt namnfält.
+  // Här kontrolleras att användaren skrivit in sitt namn innan submit.
+  if (!input1.value.trim()) { // trim tar bort mellanslag i början och slutet så att tomma input inte godkänns.
+    message.innerText = "Please enter your name before submitting your score.";
+    return; // stoppar funktionen direkt
+  }
+
+  // Här stoppar jag funktionen om resultatet redan har skickats.
+  if (scoreSubmitted) {
+    message.innerText = "Your score has already been submitted.";
+    return;
+  }
+  nameSection.style.display = 'none'; // Här döljs input och submit direkt när man klickar på submit.
+  scoreSubmitted = true; // Här markeras att score håller på att skickas.
+  button2.disabled = true; // Här stängs submit-knappen av så att man inte kan skicka flera gånger.
   try { // Här säger jag åt funktionen att försöka köra koden som skickar min POST request till en endpoint.
     const response = await fetch("https://hooks.zapier.com/hooks/catch/8338993/ujs9jj9/", { // Här
       // säger jag åt await fetch: (försök) skicka in min totala poäng.
@@ -175,12 +197,21 @@ async function submitHighScore() {
         getScoreBoardData(); // Här hämtas den aktuella scoreboarden när spelet är slut, efter att min data skickats/Post
         // requesten är klar.
         scoreboardSection.style.display = 'block';
+        scoreboardModal.style.display = 'flex'; // Här visas scoreboarden i en popup.
+        // Här ändras samma knapp till att bli börja om-spelet-knapp, efter att man tryckt på submit
+        message.innerText = ""; // Här döljs "Your score is registered!"
+        button1.style.display = 'block';
+        button1.innerText = 'PLAY AGAIN?'; // Här ändras texten så att samma knapp används för att starta om spelet.
       }, 2000); // väntar 2 sek innan scoreboarden hämtas
 
     } else { // Om requesten har gått fram men servern svarar med ett fel får man detta svar.
+      scoreSubmitted = false;
+      button2.disabled = false;
       message.innerText = "Something went wrong, your score is not available.";
     }
   } catch (error) { // Här säger jag att om requesten kraschar/något går fel ska det fångas i catch och ge ett felmeddelande.
+    scoreSubmitted = false;
+    button2.disabled = false;
     console.error(error);
     message.innerText = "Something went wrong, your score could not be registered."; // Här visas ett meddelande om något
     // gick fel med tex nätverket och requesten inte går igenom.
